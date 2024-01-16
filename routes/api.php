@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::post('register', [UserController::class, "register"]);
+Route::post('login', [UserController::class, "login"]);
+Route::post('logout', [UserController::class, "logout"]);
 
 Route::get('/', [ProductController::class, "indexProduct"]);
 Route::post('add', [ProductController::class, "addProduct"]);
