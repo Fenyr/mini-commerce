@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +17,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/', [ProductController::class, "indexProduct"]);
+Route::post('add', [ProductController::class, "addProduct"]);
+Route::post('edit', [ProductController::class, "editProduct"]);
+Route::post('delete', [ProductController::class, "deleteProduct"]);
+
+Route::prefix('cart')->group(function () {
+    Route::get('', [CartController::class, "indexCart"]);
+    Route::post('add', [CartController::class, "addCart"]);
+    Route::post('increase', [CartController::class, "increaseCart"]);
+    Route::post('decrease', [CartController::class, "decreaseCart"]);
+    Route::post('delete', [CartController::class, "deleteCart"]);
 });
+Route::prefix('order')->group(function () {
+    Route::get('', [CartController::class, "indexOrder"]);
+    Route::post('add', [OrderController::class, "addOrdert"]);
+    Route::post('pay', [OrderController::class, "payOrder"]);
+    Route::post('complete', [OrderController::class, "completeOrder"]);
+    Route::post('delete', [OrderController::class, "deleteOrder"]);
+});
+// Route::middleware(['auth', 'sanctum'])->group(function () { });
