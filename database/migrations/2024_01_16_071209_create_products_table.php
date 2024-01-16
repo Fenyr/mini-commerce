@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string("title", 64);
             $table->string("slug");
             $table->string("image");
-            $table->string("description");
+            $table->longText("description");
             $table->decimal("price", 10, 2);
             $table->integer("category");
             $table->integer("stock");
