@@ -24,7 +24,7 @@ return new class extends Migration
         });
 
         // add admin query
-        DB::table('users')->insert(["name" => "admin", "email" => "admin@mail.com", "password" => "admin123", "role" => "admin"]);
+        DB::table('users')->insert(["name" => "admin", "email" => "admin@mail.com", "password" => bcrypt("admin123"), "role" => "admin"]);
     }
 
     /**

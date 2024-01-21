@@ -15,9 +15,9 @@ class CartController extends Controller
     }
     public function addCart(Request $request)
     {
-        $this->request->validate([
-            "product_id",
-            "quantity",
+        $request->validate([
+            "product_id" => "required",
+            "quantity" => "required",
         ]);
         $user_id = auth()->user()->id();
 

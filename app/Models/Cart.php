@@ -15,4 +15,14 @@ class Cart extends Model
         "quantity",
         "status",
     ];
+
+    protected $hidden =  [
+        "product_id"
+    ];
+    protected $with = ['product'];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, "product_id");
+    }
 }

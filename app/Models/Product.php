@@ -15,8 +15,16 @@ class Product extends Model
         "image",
         "description",
         "price",
-        "category",
+        "category_id",
         "stock",
         "preorder",
     ];
+    protected $hidden =  ["category_id"];
+    protected $with = ['category'];
+
+    public function category()
+    {
+        $arr = $this->belongsTo(Category::class, "category_id");
+        return $arr;
+    }
 }

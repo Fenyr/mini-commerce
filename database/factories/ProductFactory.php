@@ -24,7 +24,7 @@ class ProductFactory extends Factory
             "image" => fake()->imageUrl(),
             "description" => fake()->paragraph(),
             "price" =>  floatval(fake()->numberBetween(1000, 2000)),
-            "category" => fake()->numberBetween(1, 5),
+            "category_id" => fake()->numberBetween(1, 5),
             "stock" => fake()->numberBetween(1, 20),
             "preorder" => fake()->numberBetween(0, 5),
         ];

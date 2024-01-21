@@ -15,7 +15,7 @@ class OrderController extends Controller
     }
     public function addOrder(request $request)
     {
-        $this->$request->validate([
+        $request->validate([
             "total_price" => "required",
         ]);
         $user_id = auth()->user()->id();

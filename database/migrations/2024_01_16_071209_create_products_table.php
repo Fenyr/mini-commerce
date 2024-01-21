@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("image");
             $table->longText("description");
             $table->decimal("price", 10, 2);
-            $table->integer("category");
+            $table->integer("category_id");
             $table->integer("stock");
             $table->integer("preorder");
             $table->timestamps();

@@ -18,27 +18,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', [ProductController::class, "indexProduct"]);
+
 Route::post('register', [UserController::class, "register"]);
 Route::post('login', [UserController::class, "login"]);
-Route::post('logout', [UserController::class, "logout"]);
 
-Route::get('/', [ProductController::class, "indexProduct"]);
-Route::post('add', [ProductController::class, "addProduct"]);
-Route::post('edit', [ProductController::class, "editProduct"]);
-Route::post('delete', [ProductController::class, "deleteProduct"]);
+Route::middleware("auth:sanctum")->group(function () {
+    Route::middleware('admin')->group(function () {
+        Route::post('add', [ProductController::class, "addProduct"]);
+        Route::put('edit/{id}', [ProductController::class, "editProduct"]);
+        Route::delete('delete/{id}', [ProductController::class, "deleteProduct"]);
+    });
 
-Route::prefix('cart')->group(function () {
-    Route::get('', [CartController::class, "indexCart"]);
-    Route::post('add', [CartController::class, "addCart"]);
-    Route::post('increase', [CartController::class, "increaseCart"]);
-    Route::post('decrease', [CartController::class, "decreaseCart"]);
-    Route::post('delete', [CartController::class, "deleteCart"]);
+    Route::prefix('cart')->group(function () {
+        Route::get('', [CartController::class, "indexCart"]);
+        Route::post('add', [CartController::class, "addCart"]);
+        Route::post('increase', [CartController::class, "increaseCart"]);
+        Route::post('decrease', [CartController::class, "decreaseCart"]);
+        Route::post('delete', [CartController::class, "deleteCart"]);
+    });
+    Route::prefix('order')->group(function () {
+        Route::get('', [CartController::class, "indexOrder"]);
+        Route::post('add', [OrderController::class, "addOrdert"]);
+        Route::post('pay', [OrderController::class, "payOrder"]);
+        Route::post('complete', [OrderController::class, "completeOrder"]);
+        Route::post('delete', [OrderController::class, "deleteOrder"]);
+    });
+
+    Route::post('logout', [UserController::class, "logout"]);
 });
-Route::prefix('order')->group(function () {
-    Route::get('', [CartController::class, "indexOrder"]);
-    Route::post('add', [OrderController::class, "addOrdert"]);
-    Route::post('pay', [OrderController::class, "payOrder"]);
-    Route::post('complete', [OrderController::class, "completeOrder"]);
-    Route::post('delete', [OrderController::class, "deleteOrder"]);
-});
-// Route::middleware(['auth', 'sanctum'])->group(function () { });
