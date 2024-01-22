@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
+use App\Models\Cart;
 use App\Models\Order;
+use App\Models\OrderedProduct;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -13,19 +16,29 @@ class OrderController extends Controller
         $data = Order::where("user_id", $user_id);
         return response()->json($data, 200);
     }
-    public function addOrder(request $request)
+    public function addOrder()
     {
-        $request->validate([
-            "total_price" => "required",
-        ]);
-        $user_id = auth()->user()->id();
+        $total = 0;
+        $user_id = auth()->user()->id;
+        $cart = Cart::where(["user_id", $user_id], ["status", "active"])->get();
 
-        Order::create([
-            "user_id" => $user_id,
-            "total_price" => $request['total_price'],
-            "status" => "unpaid"
-        ]);
-        return response()->json("success Place Order", 200);
+        if (!isset($cart)) {
+            return ApiResponse::nodata("No cart Found", 401);
+        }
+
+        $order = new Order();
+        foreach ($cart as $key => $val) {
+            $total += $val->product->price * $val->quantity;
+            OrderedProduct::create([
+                "order_id" => $order->id,
+                "cart_id" => $val->id,
+            ]);
+        }
+        $order["total_price"] = $total;
+        $order["status"] = "unpaid";
+        $order->save();
+
+        return ApiResponse::nodata("Success Order Item", 200);
     }
     public function PayOrder(string $id)
     {

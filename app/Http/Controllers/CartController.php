@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use App\Models\Cart;
 use Illuminate\Http\Request;
 
@@ -27,26 +28,28 @@ class CartController extends Controller
             "quantity" => $request["product_id"],
             "status" => "active",
         ]);
-        return response()->json("success added to cart", 200);
+        return ApiResponse::nodata("success added to cart", 200);
     }
     public function increaseQuantity(string $id)
     {
         $data = Cart::findorfail($id);
         $data["quantity"] += 1;
         $data->save();
-        return response()->json("success increase quantity", 200);
+        return ApiResponse::nodata("success increase quantity", 200);
     }
     public function decreaseQuantity(string $id)
     {
         $data = Cart::findorfail($id);
-        $data["quantity"] += 1;
-        $data->save();
-        return response()->json("success decrease quantity", 200);
+        if ($data["quantity"] > 0) {
+            $data["quantity"] -= 1;
+            $data->save();
+        }
+        return ApiResponse::nodata("success decrease quantity", 200);
     }
     public function deleteCart(string $id)
     {
         $data = Cart::findorfail($id);
         $data->delete();
-        return response()->json("success remove from your cart", 200);
+        return ApiResponse::nodata("success remove from your cart", 200);
     }
 }

@@ -13,4 +13,15 @@ class OrderedProduct extends Model
         "order_id",
         "cart_id"
     ];
+
+    protected $hidden =  [
+        "cart_id"
+    ];
+
+    protected $with = ['cart'];
+
+    public function cart()
+    {
+        return $this->belongsTo(Cart::class, "cart_id");
+    }
 }
