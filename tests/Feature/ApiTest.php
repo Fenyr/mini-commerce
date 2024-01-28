@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -12,6 +13,7 @@ class ApiTest extends TestCase
      * A basic feature test example.
      */
     use RefreshDatabase;
+
     public function test_get_product(): void
     {
         $response = $this->get('api/');
@@ -24,7 +26,17 @@ class ApiTest extends TestCase
     }
     public function test_login(): void
     {
-        $response = $this->postJson('/api/login', ['email' => 'admin@mail.com', 'password' => 'admin123']);
+        $user = User::create([
+            'name' => 'testuser',
+            'email' => 'testuser@example.com',
+            'password' => bcrypt('testpassword'),
+        ]);
+
+        $response = $this->postJson('/api/login', [
+            'email' => $user->email,
+            'password' => 'testpassword',
+        ]);
+
         $response->assertStatus(200)->assertJsonStructure(['token']);
     }
 }
