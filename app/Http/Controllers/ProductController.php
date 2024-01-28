@@ -12,7 +12,7 @@ class ProductController extends Controller
     //
     public function indexProduct()
     {
-        $data = Product::Paginate(10);
+        $data = Product::paginate(12);
         return response()->json($data, 200);
     }
 

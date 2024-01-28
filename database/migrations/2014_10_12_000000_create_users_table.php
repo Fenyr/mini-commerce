@@ -22,9 +22,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
-
-        // add admin query
-        DB::table('users')->insert(["name" => "admin", "email" => "admin@mail.com", "password" => bcrypt("admin123"), "role" => "admin"]);
+        
     }
 
     /**

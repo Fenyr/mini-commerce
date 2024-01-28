@@ -13,6 +13,12 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::factory(5)->create();
+        Category::insert([
+            ['name' => 'Bread'],
+            ['name' => 'Cake'],
+            ['name' => 'Cookies'],
+            ['name' => 'Pasta'],
+            ['name' => 'Drink'],
+        ]);
     }
 }

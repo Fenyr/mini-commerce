@@ -17,7 +17,7 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $title = fake()->name();
+        $title = fake()->word();
         return [
             "title" => $title,
             "slug" => Str::slug($title),
