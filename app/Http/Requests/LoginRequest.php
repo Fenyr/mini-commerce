@@ -4,12 +4,13 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CartRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            "product_id" => "required"
+            'email' => 'required|email',
+            'password' => 'required',
         ];
     }
 }
