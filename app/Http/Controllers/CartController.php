@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
+use App\Http\Requests\CartRequest;
 use App\Models\Cart;
 use Illuminate\Http\Request;
 
@@ -14,18 +15,13 @@ class CartController extends Controller
         $data = Cart::where("user_id", $user_id);
         return response()->json($data, 200);
     }
-    public function addCart(Request $request)
+    public function addCart(CartRequest $request)
     {
-        $request->validate([
-            "product_id" => "required",
-            "quantity" => "required",
-        ]);
         $user_id = auth()->user()->id();
-
         Cart::create([
             "user_id" => $user_id,
             "product_id" => $request["product_id"],
-            "quantity" => $request["product_id"],
+            "quantity" => 1,
             "status" => "active",
         ]);
         return ApiResponse::nodata("success added to cart", 200);

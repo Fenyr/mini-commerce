@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
+use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -16,18 +17,8 @@ class ProductController extends Controller
         return response()->json($data, 200);
     }
 
-    public function addProduct(Request $request)
+    public function addProduct(ProductRequest $request)
     {
-        $request->validate([
-            "title" => "required",
-            "image"  => "required",
-            "description"  => "required",
-            "price"  => "required",
-            "category_id"  => "required",
-            "stock"  => "required",
-            "preorder"  => "required",
-        ]);
-
         $data = Product::create([
             "title" => $request["title"],
             "slug" => Str::slug($request["title"]),
@@ -40,18 +31,8 @@ class ProductController extends Controller
         ]);
         return ApiResponse::withdata("Success Added Data", 200, $data);
     }
-    public function editProduct(string $id, Request $request)
+    public function editProduct(string $id, ProductRequest $request)
     {
-        $request->validate([
-            "title" => "required",
-            "image"  => "required",
-            "description"  => "required",
-            "price"  => "required",
-            "category_id"  => "required",
-            "stock"  => "required",
-            "preorder"  => "required",
-        ]);
-
         $data = Product::findorfail($id);
         $data->update([
             "title" => $request["title"],
