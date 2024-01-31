@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\ApiResponse;
 use App\Models\Cart;
 use App\Models\Order;
-use App\Models\OrderedProduct;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -18,20 +18,21 @@ class OrderController extends Controller
     }
     public function addOrder()
     {
-        $total = 0;
         $user_id = auth()->user()->id;
-        $cart = Cart::where(["user_id", $user_id], ["status", "active"])->get();
-
+        $cart = Cart::where(["user_id", $user_id], ["isChecked", true])->get();
+        
         if (!isset($cart)) {
             return ApiResponse::nodata("No cart Found", 401);
         }
-
+        
+        $total = 0;
         $order = new Order();
         foreach ($cart as $key => $val) {
             $total += $val->product->price * $val->quantity;
-            OrderedProduct::create([
+            OrderItem::create([
                 "order_id" => $order->id,
-                "cart_id" => $val->id,
+                "quantity" => $val->quantity,
+                "subtotal" => $val->quantity*$val->product->price,
             ]);
         }
         $order["total_price"] = $total;

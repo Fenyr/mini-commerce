@@ -53,6 +53,6 @@ Route::middleware("auth:sanctum")->group(function () {
 
 Route::get('/test-mail', function () {
 
-    dispatch(new SendEmailJob("gate.mob@gmail.com"));
+    dispatch(new SendEmailJob("gate.mob@gmail.com","Test","test MSG"));
     return 'Mail sent successfully!';
 });

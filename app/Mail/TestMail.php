@@ -9,6 +9,8 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
+use function Spatie\Ignition\ErrorPage\config;
+
 class TestMail extends Mailable
 {
     use Queueable, SerializesModels;
@@ -27,6 +29,6 @@ class TestMail extends Mailable
 
     public function build()
     {
-        return $this->from('dev.mushlih@gmail.com')->subject($this->title)->view("Email");
+        return $this->subject($this->title)->markdown("Email")->with(["title"=>$this->title, "msg"=>$this->msg]);
     }
 }
