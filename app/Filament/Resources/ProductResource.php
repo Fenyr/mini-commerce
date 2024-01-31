@@ -29,8 +29,8 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')->live()
-                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
+                Forms\Components\TextInput::make('title')
+                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->live()
                     ->required()
                     ->maxLength(64),
                 Forms\Components\TextInput::make('slug')

@@ -52,7 +52,10 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')->icon('heroicon-m-envelope')
                     ->searchable(),
-                Tables\Columns\BadgeColumn::make('role')
+                Tables\Columns\BadgeColumn::make('role')->colors([
+                    'warning' => 'user',
+                    'success' => 'admin',
+                ])
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

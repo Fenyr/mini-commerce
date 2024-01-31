@@ -5,13 +5,20 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\Card as FilamentCard;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Foundation\Auth\User;
 
 class OrderResource extends Resource
 {
@@ -24,8 +31,24 @@ class OrderResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $price = OrderItem::join('products', 'order_items.product_id', '=', 'products.id')
+        ->where('order_items.order_id', 1)
+        ->sum('products.price');
         return $form
             ->schema([
+                Grid::make(3)->schema([
+                    Forms\Components\Select::make('user_id')->options(User::pluck("name","id"))->default("user_id")->required(),
+                    Forms\Components\TextInput::make('total')
+                    ->prefix("Rp.")->required(),
+                    Forms\Components\Select::make('status')->options([
+                        'unpaid' => "Unpaid",
+                        'process' => "Process",
+                        'delivered' => "Delivered"
+    
+                    ])
+                    ]),
+                
+               
             ]);
     }
 
@@ -48,7 +71,11 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('total')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\BadgeColumn::make('status')->colors([
+                    'warning' => 'process',
+                    'success' => 'delivered',
+                    'danger' => 'unpaid',
+                ])
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -75,8 +102,8 @@ class OrderResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
-        ];
+            RelationManagers\OrderItemRelationManager::class
+         ];
     }
 
     public static function getPages(): array
