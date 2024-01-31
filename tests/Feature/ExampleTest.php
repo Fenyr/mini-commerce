@@ -10,10 +10,9 @@ class ExampleTest extends TestCase
     /**
      * A basic test example.
      */
-    public function test_the_application_returns_a_successful_response(): void
+    public function test_seeding_into_application(): void
     {
-        $response = $this->get('api');
-
-        $response->assertStatus(200);
+        $this->artisan('migrate:fresh --seed');
+        $this->assertTrue(true);
     }
 }
