@@ -38,7 +38,7 @@ class OrderController extends Controller
         $order["total_price"] = $total;
         $order["status"] = "unpaid";
         $order->save();
-
+        dispatch(new SendEmailJob(auth()->user()->email(),"Order Received","Your order Receive in our server"));
         return ApiResponse::nodata("Success Order Item", 200);
     }
     public function PayOrder(string $id)
@@ -46,6 +46,7 @@ class OrderController extends Controller
         $data = Order::findorfail($id);
         $data["status"] = "process";
         $data->save();
+        dispatch(new SendEmailJob(auth()->user()->email(),"Order Paid","Your order will be Processed"));
         return response()->json("success Paid Order", 200);
     }
     public function completeOrder(string $id)
@@ -53,6 +54,7 @@ class OrderController extends Controller
         $data = Order::findorfail($id);
         $data["status"] = "complete";
         $data->save();
+        dispatch(new SendEmailJob(auth()->user()->email(),"Order Completed","Your order Has Completed"));
         return response()->json("success Complete Your Order", 200);
     }
     public function deleteOrder(string $id)
