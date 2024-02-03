@@ -3,11 +3,13 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ApiTest extends TestCase
 {
+
 
     protected $user;
     protected $token;
@@ -15,6 +17,8 @@ class ApiTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->artisan('migrate:fresh --seed');
+
         $this->user = User::factory()->create();
         $this->token = $this->user->createToken('test-token')->plainTextToken;
     }
@@ -30,6 +34,12 @@ class ApiTest extends TestCase
     }
     public function test_auth_login(): void
     {
+        $this->postJson('/api/register', [
+            'name' => 'testuser',
+            'email' => 'testuser@example.com',
+            'password' => 'testpassword'
+        ]);
+
         $response = $this->postJson('/api/login', [
             'email' => 'testuser@example.com',
             'password' => 'testpassword',
@@ -68,6 +78,9 @@ class ApiTest extends TestCase
         $head = [
             'Authorization' => 'Bearer ' . $this->token
         ];
+        $this->withHeaders($head)->postJson('/api/cart/add', [
+            'product_id' => 1,
+        ]);
         $response = $this->withHeaders($head)->postJson('/api/cart/increase/1');
 
         $response->assertStatus(200);
@@ -77,6 +90,9 @@ class ApiTest extends TestCase
         $head = [
             'Authorization' => 'Bearer ' . $this->token
         ];
+        $this->withHeaders($head)->postJson('/api/cart/add', [
+            'product_id' => 1,
+        ]);
         $response = $this->withHeaders($head)->postJson('/api/cart/decrease/1');
 
         $response->assertStatus(200);
