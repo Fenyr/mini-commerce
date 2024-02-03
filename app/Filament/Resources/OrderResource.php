@@ -8,7 +8,6 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use Filament\Forms;
-use Filament\Forms\Components\Card as FilamentCard;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
@@ -32,23 +31,23 @@ class OrderResource extends Resource
     public static function form(Form $form): Form
     {
         $price = OrderItem::join('products', 'order_items.product_id', '=', 'products.id')
-        ->where('order_items.order_id', 1)
-        ->sum('products.price');
+            ->where('order_items.order_id', 1)
+            ->sum('products.price');
         return $form
             ->schema([
                 Grid::make(3)->schema([
-                    Forms\Components\Select::make('user_id')->options(User::pluck("name","id"))->default("user_id")->required(),
+                    Forms\Components\Select::make('user_id')->options(User::pluck("name", "id"))->default("user_id")->required(),
                     Forms\Components\TextInput::make('total')
-                    ->prefix("Rp.")->required(),
+                        ->prefix("Rp.")->required(),
                     Forms\Components\Select::make('status')->options([
                         'unpaid' => "Unpaid",
                         'process' => "Process",
                         'delivered' => "Delivered"
-    
+
                     ])
-                    ]),
-                
-               
+                ]),
+
+
             ]);
     }
 
@@ -103,7 +102,7 @@ class OrderResource extends Resource
     {
         return [
             RelationManagers\OrderItemRelationManager::class
-         ];
+        ];
     }
 
     public static function getPages(): array

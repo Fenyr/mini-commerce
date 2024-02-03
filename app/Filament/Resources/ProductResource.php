@@ -46,8 +46,8 @@ class ProductResource extends Resource
                     ->numeric()
                     ->prefix('Rp.'),
                 Forms\Components\Select::make('category_id')->label('Category')
-                ->options(Category::all()->pluck('name', 'id'))
-                ->searchable(),
+                    ->options(Category::all()->pluck('name', 'id'))
+                    ->searchable(),
                 Forms\Components\TextInput::make('stock')
                     ->required()
                     ->numeric(),

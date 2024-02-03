@@ -14,8 +14,8 @@ class OrderSeeder extends Seeder
     public function run(): void
     {
         Order::insert([
-            ["user_id" =>2, "total" => 20000, "status"=>'process'],
-            ["user_id" =>3, "total" => 10000, "status"=>'process'],
+            ["user_id" => 2, "total" => 20000, "status" => 'process'],
+            ["user_id" => 3, "total" => 10000, "status" => 'process'],
         ]);
     }
 }

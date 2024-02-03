@@ -10,6 +10,7 @@ class Cart extends Model
     use HasFactory;
 
     protected $guarded = [];
+    public $timestamps = false;
 
     protected $hidden =  [
         "product_id"

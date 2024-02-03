@@ -20,7 +20,7 @@ class UserController extends Controller
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
-        dispatch(new SendEmailJob($user->email,"Mini Marketplace - Reigistration","You Successfully Registered"));
+        dispatch(new SendEmailJob($user->email, "Mini Marketplace - Reigistration", "You Successfully Registered"));
 
 
         return response()->json(['token' => $token], 200);
@@ -30,7 +30,7 @@ class UserController extends Controller
 
         if (Auth::attempt($request->toArray())) {
             $token = $request->user()->createToken("auth_token");
-            dispatch(new SendEmailJob($request->email,"Mini Marketplace - Login","Login Activity Detected"));
+            dispatch(new SendEmailJob($request->email, "Mini Marketplace - Login", "Login Activity Detected"));
             return response()->json(['token' => $token->plainTextToken], 200);
         }
 

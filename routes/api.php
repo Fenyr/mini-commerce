@@ -35,13 +35,13 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::prefix('cart')->group(function () {
         Route::get('', [CartController::class, "indexCart"]);
         Route::post('add', [CartController::class, "addCart"]);
-        Route::post('increase', [CartController::class, "increaseCart"]);
-        Route::post('decrease', [CartController::class, "decreaseCart"]);
-        Route::post('delete', [CartController::class, "deleteCart"]);
+        Route::post('increase/{id}', [CartController::class, "increaseCart"]);
+        Route::post('decrease/{id}', [CartController::class, "decreaseCart"]);
+        Route::post('delete/{id}', [CartController::class, "deleteCart"]);
     });
     Route::prefix('order')->group(function () {
         Route::get('', [CartController::class, "indexOrder"]);
-        Route::post('add', [OrderController::class, "addOrdert"]);
+        Route::post('add', [OrderController::class, "addOrder"]);
         Route::post('pay', [OrderController::class, "payOrder"]);
         Route::post('complete', [OrderController::class, "completeOrder"]);
         Route::post('delete', [OrderController::class, "deleteOrder"]);
@@ -53,6 +53,6 @@ Route::middleware("auth:sanctum")->group(function () {
 
 Route::get('/test-mail', function () {
 
-    dispatch(new SendEmailJob("gate.mob@gmail.com","Test","test MSG"));
+    dispatch(new SendEmailJob("gate.mob@gmail.com", "Test", "test MSG"));
     return 'Mail sent successfully!';
 });
